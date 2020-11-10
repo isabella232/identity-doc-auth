@@ -10,7 +10,7 @@ RSpec.describe IdentityDocAuth::LexisNexis::Request do
   let(:config) do
     IdentityDocAuth::LexisNexis::Config.new(
       base_url: base_url,
-      i18n: FakeI18n.new('doc_auth.errors.lexis_nexis.network_error'),
+      locale: :en,
     )
   end
   subject(:request) { IdentityDocAuth::LexisNexis::Request.new(config: config) }
@@ -95,6 +95,12 @@ RSpec.describe IdentityDocAuth::LexisNexis::Request do
           expect(response.exception.message).to eq(expected_message)
         end
       end
+    end
+  end
+
+  describe '#settings' do
+    it 'includes the locale' do
+      expect(subject.send(:settings)[:Settings][:Locale]).to eq(:en)
     end
   end
 

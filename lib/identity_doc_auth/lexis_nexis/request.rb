@@ -48,7 +48,7 @@ module IdentityDocAuth
         config.exception_notifier&.call(exception)
         IdentityDocAuth::Response.new(
           success: false,
-          errors: { network: config.i18n.t('doc_auth.errors.lexis_nexis.network_error') },
+          errors: { network: true },
           exception: exception,
         )
       end
@@ -111,7 +111,7 @@ module IdentityDocAuth
           Type: 'Initiate',
           Settings: {
             Mode: request_mode,
-            Locale: config.i18n.locale,
+            Locale: config.locale,
             Venue: 'online',
             Reference: uuid,
           },

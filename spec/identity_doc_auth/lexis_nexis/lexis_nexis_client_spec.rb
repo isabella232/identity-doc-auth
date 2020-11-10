@@ -10,24 +10,11 @@ RSpec.describe IdentityDocAuth::LexisNexis::LexisNexisClient do
     )
   end
 
-  let(:i18n) do
-    FakeI18n.new(
-      'doc_auth.errors.lexis_nexis.id_not_verified',
-      'doc_auth.errors.lexis_nexis.network_error',
-      'doc_auth.errors.lexis_nexis.ref_control_number_check',
-      'doc_auth.errors.lexis_nexis.barcode_content_check',
-      'doc_auth.errors.lexis_nexis.control_number_check',
-      'doc_auth.errors.lexis_nexis.expiration_checks',
-      'doc_auth.errors.lexis_nexis.selfie_failure',
-      'doc_auth.errors.lexis_nexis.general_error_liveness',
-    )
-  end
-
   subject(:client) do
     IdentityDocAuth::LexisNexis::LexisNexisClient.new(
       base_url: "https://lexis.nexis.example.com",
+      locale: "en",
       trueid_account_id: "test_account",
-      i18n: i18n,
       trueid_liveness_workflow: 'LIVENESS.WORKFLOW',
       trueid_noliveness_workflow: 'NO.LIVENESS.WORKFLOW',
     )
@@ -153,7 +140,7 @@ RSpec.describe IdentityDocAuth::LexisNexis::LexisNexisClient do
       )
 
       expect(result.success?).to eq(false)
-      expect(result.errors).to eq({ network: i18n.t('doc_auth.errors.lexis_nexis.network_error') })
+      expect(result.errors).to eq(network: true)
       expect(result.exception.message).to eq(
         'IdentityDocAuth::LexisNexis::Requests::TrueIdRequest Unexpected HTTP response 500',
       )
@@ -172,7 +159,7 @@ RSpec.describe IdentityDocAuth::LexisNexis::LexisNexisClient do
       )
 
       expect(result.success?).to eq(false)
-      expect(result.errors).to eq({ network: i18n.t('doc_auth.errors.lexis_nexis.network_error') })
+      expect(result.errors).to eq(network: true)
       expect(result.exception.message).to eq(
         'Connection failed',
       )
